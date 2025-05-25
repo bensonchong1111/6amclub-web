@@ -6,7 +6,7 @@ import LandingPage from './pages/LandingPage';
 function App() {
   return (
     <Provider store={store}>
-      <div className="min-h-screen bg-orange-50 text-orange-600">
+      <div className="min-h-screen">
         <LandingPage />
       </div>
     </Provider>

@@ -14,7 +14,7 @@ const LandingPage = () => {
 
   const handleConnectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
-      if (isConnecting) return; // Prevent multiple concurrent requests
+      if (isConnecting) return;
       
       setIsConnecting(true);
       try {
@@ -47,22 +47,40 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 morning-gradient">
-      <div className="sunrise">
-        <h1 className="text-7xl font-bold mb-4 text-orange-600 text-center">6AM CLUB</h1>
-        <p className="text-xl text-orange-700 mb-12 text-center">Start your day with purpose</p>
-        
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button onClick={() => setIsLoginModalOpen(true)}>
-            Login with Email
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={handleConnectWallet}
-            disabled={isConnecting}
-          >
-            {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-          </Button>
+    <div className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+      >
+        <source
+          src="https://player.vimeo.com/external/534342299.sd.mp4?s=f0fb41d0bd4e87d43aef4b9c1a4e2d6063f4edb5&profile_id=164&oauth2_token_id=57447761"
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Content Overlay */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
+        <div className="sunrise backdrop-blur-sm bg-white/30 p-8 rounded-2xl">
+          <h1 className="text-7xl font-bold mb-4 text-orange-600">6AM CLUB</h1>
+          <p className="text-xl text-orange-700 mb-12">Start your day with purpose</p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button onClick={() => setIsLoginModalOpen(true)}>
+              Login with Email
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={handleConnectWallet}
+              disabled={isConnecting}
+            >
+              {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+            </Button>
+          </div>
         </div>
       </div>
 
