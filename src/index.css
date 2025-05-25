@@ -3,8 +3,6 @@
 @tailwind utilities;
 
 :root {
-  background-color: #fff8f0;
-  color: #ff6b35;
   font-family: system-ui, -apple-system, sans-serif;
 }
 

@@ -54,10 +54,10 @@ const LandingPage = () => {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        className="absolute top-0 left-0 min-w-full min-h-full w-auto h-auto object-cover z-0"
       >
         <source
-          src="https://player.vimeo.com/external/534342299.sd.mp4?s=f0fb41d0bd4e87d43aef4b9c1a4e2d6063f4edb5&profile_id=164&oauth2_token_id=57447761"
+          src="https://player.vimeo.com/progressive_redirect/playback/689925141/rendition/360p?loc=external&oauth2_token_id=1747418641&signature=f53c9a02b5a8b3a4d2e5d8c78561d53f3dac9f1aa2e0b2b4bd42c7572b04c2b4"
           type="video/mp4"
         />
         Your browser does not support the video tag.
