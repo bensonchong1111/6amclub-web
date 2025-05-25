@@ -14,11 +14,22 @@ const LandingPage = () => {
 
   const handleConnectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
-      if (isConnecting) return;
+      if (isConnecting) {
+        // If a connection is already in progress, don't start another one
+        return;
+      }
       
       setIsConnecting(true);
       try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // Clear any previous pending requests
+        await window.ethereum.request({
+          method: 'wallet_requestPermissions',
+          params: [{ eth_accounts: {} }],
+        });
+        
+        const accounts = await window.ethereum.request({ 
+          method: 'eth_requestAccounts'
+        });
         dispatch(setWalletAddress(accounts[0]));
       } catch (error) {
         if (error.message.includes('User rejected the request')) {
