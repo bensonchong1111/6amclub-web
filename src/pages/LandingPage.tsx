@@ -54,10 +54,11 @@ const LandingPage = () => {
         loop
         muted
         playsInline
-        className="absolute top-0 left-0 min-w-full min-h-full w-full h-full object-cover z-0"
+        className="absolute top-0 left-0 min-w-full min-h-full w-auto h-auto object-cover z-0"
+        style={{ filter: 'brightness(0.8)' }}
       >
         <source
-          src="https://assets.mixkit.co/videos/preview/mixkit-sun-rising-in-a-desert-landscape-43053-large.mp4"
+          src="https://player.vimeo.com/external/314181352.sd.mp4?s=9f9bf58edae1c3fcbcd60b84daa30b6cafd6e7cd&profile_id=164&oauth2_token_id=57447761"
           type="video/mp4"
         />
         Your browser does not support the video tag.
