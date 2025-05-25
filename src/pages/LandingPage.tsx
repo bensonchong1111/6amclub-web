@@ -37,8 +37,8 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-6xl font-bold mb-12 text-green-400">6AM CLUB</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 morning-gradient">
+      <h1 className="text-6xl font-bold mb-12 text-orange-600">6AM CLUB</h1>
       
       <div className="flex flex-col sm:flex-row gap-4">
         <Button onClick={() => setIsLoginModalOpen(true)}>
@@ -57,14 +57,14 @@ const LandingPage = () => {
         onClose={() => setIsLoginModalOpen(false)}
       >
         <form onSubmit={handleEmailLogin} className="space-y-4">
-          <h2 className="text-2xl font-bold text-green-400 mb-6">Login</h2>
+          <h2 className="text-2xl font-bold text-orange-600 mb-6">Login</h2>
           <div>
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black border-2 border-green-500 rounded-lg px-4 py-2 text-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-orange-50 border-2 border-orange-400 rounded-lg px-4 py-2 text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
           <div>
@@ -73,13 +73,13 @@ const LandingPage = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black border-2 border-green-500 rounded-lg px-4 py-2 text-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-orange-50 border-2 border-orange-400 rounded-lg px-4 py-2 text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
           <Button onClick={() => {}} className="w-full">
             Login
           </Button>
-          <p className="text-center text-green-400 mt-4">
+          <p className="text-center text-orange-600 mt-4">
             Don't have an account?{' '}
             <button
               type="button"
@@ -87,7 +87,7 @@ const LandingPage = () => {
                 setIsLoginModalOpen(false);
                 setIsSignUpModalOpen(true);
               }}
-              className="text-green-500 hover:underline"
+              className="text-orange-500 hover:underline"
             >
               Sign up here
             </button>
@@ -100,14 +100,14 @@ const LandingPage = () => {
         onClose={() => setIsSignUpModalOpen(false)}
       >
         <form onSubmit={handleSignUp} className="space-y-4">
-          <h2 className="text-2xl font-bold text-green-400 mb-6">Sign Up</h2>
+          <h2 className="text-2xl font-bold text-orange-600 mb-6">Sign Up</h2>
           <div>
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-black border-2 border-green-500 rounded-lg px-4 py-2 text-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-orange-50 border-2 border-orange-400 rounded-lg px-4 py-2 text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
           <div>
@@ -116,13 +116,13 @@ const LandingPage = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black border-2 border-green-500 rounded-lg px-4 py-2 text-green-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full bg-orange-50 border-2 border-orange-400 rounded-lg px-4 py-2 text-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
           <Button onClick={() => {}} className="w-full">
             Sign Up
           </Button>
-          <p className="text-center text-green-400 mt-4">
+          <p className="text-center text-orange-600 mt-4">
             Already have an account?{' '}
             <button
               type="button"
@@ -130,7 +130,7 @@ const LandingPage = () => {
                 setIsSignUpModalOpen(false);
                 setIsLoginModalOpen(true);
               }}
-              className="text-green-500 hover:underline"
+              className="text-orange-500 hover:underline"
             >
               Login here
             </button>

@@ -10,10 +10,10 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div
-        className="absolute inset-0 bg-black/80"
+        className="absolute inset-0 bg-black/20"
         onClick={onClose}
       />
-      <div className="relative bg-gray-900 p-8 rounded-xl border-2 border-green-500 w-full max-w-md">
+      <div className="relative bg-white p-8 rounded-xl border-2 border-orange-400 w-full max-w-md shadow-xl">
         {children}
       </div>
     </div>
