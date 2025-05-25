@@ -10,9 +10,13 @@ const LandingPage = () => {
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const handleConnectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
+      if (isConnecting) return; // Prevent multiple concurrent requests
+      
+      setIsConnecting(true);
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         dispatch(setWalletAddress(accounts[0]));
@@ -23,6 +27,8 @@ const LandingPage = () => {
           console.error('Error connecting wallet:', error);
           alert('Failed to connect wallet. Please try again.');
         }
+      } finally {
+        setIsConnecting(false);
       }
     } else {
       alert('Please install MetaMask!');
@@ -53,8 +59,9 @@ const LandingPage = () => {
           <Button
             variant="secondary"
             onClick={handleConnectWallet}
+            disabled={isConnecting}
           >
-            Connect Wallet
+            {isConnecting ? 'Connecting...' : 'Connect Wallet'}
           </Button>
         </div>
       </div>
