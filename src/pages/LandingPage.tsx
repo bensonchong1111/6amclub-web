@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { motion } from 'framer-motion';
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
 import { setWalletAddress, setEmailAuth } from '../store/slices/authSlice';
@@ -17,7 +18,6 @@ const LandingPage = () => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         dispatch(setWalletAddress(accounts[0]));
       } catch (error) {
-        // Check if the error is due to user rejection
         if (error.message.includes('User rejected the request')) {
           alert('Wallet connection rejected by user.');
         } else {
@@ -38,15 +38,52 @@ const LandingPage = () => {
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    // Implement sign up logic here
     setIsSignUpModalOpen(false);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 morning-gradient">
-      <h1 className="text-6xl font-bold mb-12 text-orange-600">6AM CLUB</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 morning-gradient relative overflow-hidden">
+      {/* Animated sun */}
+      <motion.div
+        className="absolute top-0 right-0 w-64 h-64 bg-yellow-300 rounded-full -mr-32 -mt-32"
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.5, 0.7, 0.5],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+
+      {/* Animated clouds */}
+      <motion.div
+        className="absolute top-20 left-10 w-32 h-12 bg-white rounded-full opacity-60"
+        animate={{
+          x: [0, 30, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+
+      <motion.div
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h1 className="text-6xl font-bold mb-12 text-orange-600">6AM CLUB</h1>
+      </motion.div>
       
-      <div className="flex flex-col sm:flex-row gap-4">
+      <motion.div 
+        className="flex flex-col sm:flex-row gap-4"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
         <Button onClick={() => setIsLoginModalOpen(true)}>
           Login with Email
         </Button>
@@ -56,7 +93,7 @@ const LandingPage = () => {
         >
           Connect Wallet
         </Button>
-      </div>
+      </motion.div>
 
       <Modal
         isOpen={isLoginModalOpen}
