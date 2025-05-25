@@ -17,7 +17,13 @@ const LandingPage = () => {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         dispatch(setWalletAddress(accounts[0]));
       } catch (error) {
-        console.error('Error connecting wallet:', error);
+        // Check if the error is due to user rejection
+        if (error.message.includes('User rejected the request')) {
+          alert('Wallet connection rejected by user.');
+        } else {
+          console.error('Error connecting wallet:', error);
+          alert('Failed to connect wallet. Please try again.');
+        }
       }
     } else {
       alert('Please install MetaMask!');
