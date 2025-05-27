@@ -1,4 +1,3 @@
-```tsx
 import React from 'react';
 
 interface ButtonProps {
@@ -29,10 +28,9 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={\`${baseStyles} ${variantStyles[variant]} ${className}`}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
     >
       {children}
     </button>
   );
 };
-```
