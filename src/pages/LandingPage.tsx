@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
 import { setWalletAddress, setEmailAuth } from '../store/slices/authSlice';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
   updateProfile 
 } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -86,6 +87,13 @@ const LandingPage = () => {
       
       await updateProfile(user, {
         displayName: username
+      });
+
+      // Create user document in Firestore
+      await setDoc(doc(db, 'users', user.uid), {
+        username,
+        email: user.email,
+        createdAt: serverTimestamp()
       });
 
       dispatch(setEmailAuth({
