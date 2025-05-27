@@ -71,6 +71,7 @@ const LandingPage = () => {
         username: user.displayName || '',
         uid: user.uid
       }));
+      setIsLoginModalOpen(false);
       navigate('/home');
     } catch (error: any) {
       setError(error.message);
@@ -103,6 +104,7 @@ const LandingPage = () => {
         username,
         uid: user.uid
       }));
+      setIsSignUpModalOpen(false);
       navigate('/home');
     } catch (error: any) {
       setError(error.message);
@@ -157,11 +159,12 @@ const LandingPage = () => {
           )}
           <div>
             <input
-              type="text"
-              placeholder="Email or Username"
+              type="email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
             />
           </div>
           <div>
@@ -171,9 +174,10 @@ const LandingPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
             />
           </div>
-          <Button onClick={() => {}} className="w-full">
+          <Button type="submit" className="w-full">
             Login
           </Button>
           <p className="text-center text-orange-600 mt-4">
@@ -208,6 +212,7 @@ const LandingPage = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
             />
           </div>
           <div>
@@ -217,6 +222,7 @@ const LandingPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
             />
           </div>
           <div>
@@ -226,9 +232,10 @@ const LandingPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+              required
             />
           </div>
-          <Button onClick={() => {}} className="w-full">
+          <Button type="submit" className="w-full">
             Sign Up
           </Button>
           <p className="text-center text-orange-600 mt-4">
