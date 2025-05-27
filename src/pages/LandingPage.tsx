@@ -3,25 +3,31 @@ import { useDispatch } from 'react-redux';
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
 import { setWalletAddress, setEmailAuth } from '../store/slices/authSlice';
+import { auth } from '../firebase';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword,
+  updateProfile 
+} from 'firebase/auth';
 
 const LandingPage = () => {
   const dispatch = useDispatch();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleConnectWallet = async () => {
     if (typeof window.ethereum !== 'undefined') {
       if (isConnecting) {
-        // If a connection is already in progress, don't start another one
         return;
       }
       
       setIsConnecting(true);
       try {
-        // Clear any previous pending requests
         await window.ethereum.request({
           method: 'wallet_requestPermissions',
           params: [{ eth_accounts: {} }],
@@ -46,20 +52,55 @@ const LandingPage = () => {
     }
   };
 
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(setEmailAuth(email));
-    setIsLoginModalOpen(false);
+    setError('');
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      dispatch(setEmailAuth({
+        email: user.email!,
+        username: user.displayName || '',
+        uid: user.uid
+      }));
+      setIsLoginModalOpen(false);
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSignUpModalOpen(false);
+    setError('');
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      
+      await updateProfile(user, {
+        displayName: username
+      });
+
+      dispatch(setEmailAuth({
+        email: user.email!,
+        username,
+        uid: user.uid
+      }));
+      setIsSignUpModalOpen(false);
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
-      {/* Video Background */}
       <video
         autoPlay
         loop
@@ -75,7 +116,6 @@ const LandingPage = () => {
         Your browser does not support the video tag.
       </video>
 
-      {/* Content Overlay */}
       <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
         <div className="sunrise backdrop-blur-sm bg-white/30 p-8 rounded-2xl">
           <h1 className="text-7xl font-bold mb-4 text-orange-600">6AM CLUB</h1>
@@ -102,10 +142,13 @@ const LandingPage = () => {
       >
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <h2 className="text-2xl font-bold text-orange-600 mb-6">Welcome Back</h2>
+          {error && (
+            <p className="text-red-500 text-sm">{error}</p>
+          )}
           <div>
             <input
-              type="email"
-              placeholder="Email"
+              type="text"
+              placeholder="Email or Username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
@@ -145,6 +188,18 @@ const LandingPage = () => {
       >
         <form onSubmit={handleSignUp} className="space-y-4">
           <h2 className="text-2xl font-bold text-orange-600 mb-6">Join the Club</h2>
+          {error && (
+            <p className="text-red-500 text-sm">{error}</p>
+          )}
+          <div>
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full bg-white/50 border-2 border-orange-300 rounded-lg px-4 py-2 text-orange-600 placeholder-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+          </div>
           <div>
             <input
               type="email"
