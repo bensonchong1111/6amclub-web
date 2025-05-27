@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { Modal } from './Modal';
 import { Button } from './Button';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { db } from '../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface CreateEventModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onEventCreated: () => void;
 }
 
 export const CreateEventModal: React.FC<CreateEventModalProps> = ({
   isOpen,
   onClose,
+  onEventCreated,
 }) => {
   const [eventName, setEventName] = useState('');
   const [joiningFee, setJoiningFee] = useState('');
@@ -18,11 +24,47 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
   const [endDate, setEndDate] = useState('');
   const [checkInStartTime, setCheckInStartTime] = useState('');
   const [checkInEndTime, setCheckInEndTime] = useState('');
+  const [isCreating, setIsCreating] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { uid, username } = useSelector((state: RootState) => state.auth);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle event creation logic here
-    onClose();
+    if (!uid) return;
+
+    setIsCreating(true);
+    try {
+      await addDoc(collection(db, 'events'), {
+        name: eventName,
+        joiningFee: parseFloat(joiningFee),
+        currency,
+        startDate,
+        endDate,
+        checkInStartTime,
+        checkInEndTime,
+        hostId: uid,
+        hostName: username,
+        createdAt: serverTimestamp(),
+        participants: [],
+      });
+
+      onEventCreated();
+      onClose();
+      
+      // Reset form
+      setEventName('');
+      setJoiningFee('');
+      setCurrency('USDC');
+      setStartDate('');
+      setEndDate('');
+      setCheckInStartTime('');
+      setCheckInEndTime('');
+    } catch (error) {
+      console.error('Error creating event:', error);
+      alert('Failed to create event. Please try again.');
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -134,8 +176,8 @@ export const CreateEventModal: React.FC<CreateEventModalProps> = ({
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit">
-            Create Event
+          <Button type="submit" disabled={isCreating}>
+            {isCreating ? 'Creating...' : 'Create Event'}
           </Button>
         </div>
       </form>
