@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { Modal } from '../components/Modal';
 import { setWalletAddress, setEmailAuth } from '../store/slices/authSlice';
@@ -13,6 +14,7 @@ import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 const LandingPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -38,6 +40,7 @@ const LandingPage = () => {
           method: 'eth_requestAccounts'
         });
         dispatch(setWalletAddress(accounts[0]));
+        navigate('/home');
       } catch (error) {
         if (error.message.includes('User rejected the request')) {
           alert('Wallet connection rejected by user.');
@@ -68,7 +71,7 @@ const LandingPage = () => {
         username: user.displayName || '',
         uid: user.uid
       }));
-      setIsLoginModalOpen(false);
+      navigate('/home');
     } catch (error: any) {
       setError(error.message);
     }
@@ -89,7 +92,6 @@ const LandingPage = () => {
         displayName: username
       });
 
-      // Create user document in Firestore
       await setDoc(doc(db, 'users', user.uid), {
         username,
         email: user.email,
@@ -101,7 +103,7 @@ const LandingPage = () => {
         username,
         uid: user.uid
       }));
-      setIsSignUpModalOpen(false);
+      navigate('/home');
     } catch (error: any) {
       setError(error.message);
     }
